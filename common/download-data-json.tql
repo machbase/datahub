@@ -1,0 +1,10 @@
+QUERY(
+    "name", 'value',
+    from(param('table') ?? 'home', param('sensor') ?? 'TAG-pressure'),
+    between(parseFloat(param('startTime')) * 1000000000, parseFloat(param('endTime')) * 1000000000),
+    //between('last-10s', 'last'),
+    limit(param('datalimit')??100)
+)
+PUSHVALUE(2, value(0))
+POPVALUE(0)
+JSON(timeformat(param('timeformat') ?? 's'), tz(param('timezone') ?? 'Local'))

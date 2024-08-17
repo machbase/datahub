@@ -1,0 +1,6 @@
+CSV( file(`https://neo-demo.machbase.com/db/query?`+        `format=csv&`+        `q=`+escapeParam(`select * from home`)))
+DROP(1)
+MAPVALUE(2, parseFloat(value(2)))
+MAPVALUE(1, parseTime(value(1), 'ns'))
+APPEND(table('home'))
+

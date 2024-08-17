@@ -1,0 +1,3 @@
+SQL("select name, row_count, min_time, max_time from v$" + (param("table") ?? "home") + "_stat " 
+ + (param('tagname') == NULL ? "" : "where name = '" + param('tagname') + "'"))
+JSON(timeformat('DEFAULT'), header(true), tz('Local'))

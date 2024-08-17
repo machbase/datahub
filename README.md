@@ -16,6 +16,14 @@ This repository contains the source code for Machbase's DataHub, a powerful tool
 
 This repository serves as an excellent textbook for those looking to understand how to handle large-scale data efficiently, especially in the context of time series databases, Machbase Neo.
 
+## Library
+
+https://www.github.com/machbase/datahub/$Year/$Num.$Title
+
+Year  : Year in which the data was created
+Num   : Sequential number of the dataset
+Title : Title of the dataset
+
 ## Closing Thoughts
 
 May you always be blessed with good data vibes!

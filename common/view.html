@@ -1,0 +1,423 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataHub Viewer</title>
+
+<style>
+.popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    height: 80vh;
+    padding: 20px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    z-index: 100;
+}
+        body {
+            text-align: center;
+            margin-top: 50px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .form-controls {
+            display: inline-block;
+            text-align: center;
+            background: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin: auto;
+            max-width: 95%;
+        }
+        .form-control {
+            margin: 10px 5px;
+            padding: 10px;
+            display: inline-block;
+        }
+        select, input, button {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            cursor: pointer;
+            background-image: linear-gradient(45deg, #6a5acd, #00bfff);
+            color: white;
+            border: none;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        #result {
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            display: none;
+            border-radius: 5px;
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: left;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            color: #333;
+            line-height: 1.5;
+            word-wrap: break-word;
+            width: 100%;
+            box-sizing: border-box;
+            max-width: 95%;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>DataHub Viewer</h1>
+
+
+<div class="form-controls">
+    <div class="form-control">
+        <label for="table-select">Table </label>
+        <select id="table-select">
+            <option value=""  selected>Not Selected</option>
+        </select>
+    </div>
+
+    <div class="form-control">
+        <label for="sensor-select">Tag</label> (<span id="record-count">0</span> records)
+        <select id="sensor-select">
+            <option value=""  selected>Not Selected</option>
+        </select>
+    </div>
+
+
+<div class="form-control" id="record-count-section" style="display: none;">
+    <label for="record-count">Count of records:</label>
+    <span id="record-count">0</span>
+</div>
+
+    <div class="form-control">
+        <label for="start-time">Begin Time (Local)</label>
+        <input type="datetime-local" id="start-time" name="start-time"
+               value="2016-01-01T14:00" min="2016-01-01T14:00" max="2016-01-02T17:46">
+    </div>
+    <div class="form-control">
+        <label for="end-time">End Time (Local)</label>
+        <input type="datetime-local" id="end-time" name="end-time"
+               value="2016-01-02T17:46" min="2016-01-01T14:00" max="2016-01-02T17:46">
+    </div>
+
+    <div class="form-control">
+        <label for="timeformat">Time Format:</label>
+        <select id="timeformat">
+            <option value="DEFAULT" selected> DEFAULT (2006-01-02 15:04:05.999) </option>
+            <option value="s"> Unix epoch time in seconds (1451624400) </option>
+            <option value="ms"> Unix epoch time in milliseconds (1451624400000) </option>
+            <option value="us"> Unix epoch time in microseconds (1451624400000000)</option>
+            <option value="ns"> Unix epoch time in nanoseconds  (1451624400000000000)</option>
+            <option value="NUMERIC"> NUMERIC (01/02 03:04:05PM ‘06 -0700) </option>
+            <option value="ANSIC"> ANSIC (Mon Jan _2 15:04:05 2006) </option>
+            <option value="UNIX"> UNIX (Mon Jan _2 15:04:05 MST 2006) </option>
+            <option value="RUBY"> RUBY (Mon Jan 02 15:04:05 -0700 2006) </option>
+            <option value="RFC822"> RFC822 (02 Jan 06 15:04 MST) </option>
+            <option value="RFC822Z"> RFC822Z (02 Jan 06 15:04 -0700) </option>
+            <option value="RFC850"> RFC850 (Monday, 02-Jan-06 15:04:05 MST) </option>
+            <option value="RFC1123"> RFC1123 (Mon, 02 Jan 2006 15:04:05 MST) </option>
+            <option value="RFC1123Z"> RFC1123Z (Mon, 02 Jan 2006 15:04:05 -0700) </option>
+            <option value="RFC3339"> RFC3339 (2006-01-02T15:04:05Z07:00) </option>
+            <option value="RFC3339NANO"> RFC3339NANO (2006-01-02T15:04:05.999999999Z07:00) </option>
+            <option value="KITCHEN"> KITCHEN (3:04:05PM) </option>
+            <option value="STAMP"> STAMP (Jan _2 15:04:05) </option>
+            <option value="STAMPMILLI"> STAMPMILLI (Jan _2 15:04:05.000) </option>
+            <option value="STAMPMICRO"> STAMPMICRO (Jan _2 15:04:05.000000) </option>
+            <option value="STAMPNANO"> STAMPNANO (Jan _2 15:04:05.000000000) </option>
+            <option value="s_ms"> seconds and millisec (05.999) </option>
+            <option value="s_us"> seconds and microsec (05.999999) </option>
+            <option value="s_ns"> seconds and nanosec (05.999999999) </option>
+            <option value="s.ms"> seconds and millisec, zero padding (05.000) </option>
+            <option value="s.us"> seconds and microsec, zero padding (05.000000) </option>
+            <option value="s.ns"> seconds and nanosec, zero padding (05.000000000) </option>
+        </select>
+    </div>
+
+    <div class="form-control">
+        <label for="timezone">Time Zone:</label>
+        <select id="timezone">
+    <option value="Local" selected>Local</option>
+    <option value="UTC"> (Coordinated Universal Time) </option>
+    <option value="Europe/London"> (London, UK) </option>
+    <option value="America/New_York"> (New York, USA) </option>
+    <option value="America/Los_Angeles"> (Los Angeles, USA) </option>
+    <option value="Asia/Tokyo"> (Tokyo, Japan) </option>
+    <option value="Asia/Seoul"> (Seoul, South Korea) </option>
+        <option value="Australia/Sydney"> (Sydney, Australia) </option>
+    <option value="Europe/Paris"> (Paris, France) </option>
+        <option value="Europe/Berlin"> (Berlin, Germany) </option>
+        <option value="Europe/Moscow"> (Moscow, Russia) </option>
+    <option value="Asia/Beijing"> (Beijing, China) </option>
+    <option value="Asia/Shanghai"> (Shanghai, China) </option>
+    <option value="Asia/Hong_Kong"> (Hong Kong) </option>
+    <option value="Asia/Singapore"> (Singapore) </option>
+    <option value="America/Sao_Paulo"> (Sao Paulo, Brazil) </option>
+    <option value="America/Toronto"> (Toronto, Canada) </option>
+    <option value="Europe/Madrid"> (Madrid, Spain) </option>
+    <option value="Africa/Johannesburg"> (Johannesburg, South Africa) </option>
+    <option value="Asia/Dubai"> (Dubai, United Arab Emirates) </option>
+    <option value="Asia/Kolkata"> (Kolkata, India) </option>
+
+        </select>
+    </div>
+
+    <div class="form-control">
+        <label for="data-type">Data Type:</label>
+        <select id="data-type">
+            <option value="csv" selected>CSV</option>
+            <option value="json">JSON</option>
+        </select>
+    </div>
+
+    <div class="form-control">
+        <label for="datalimit">Maximum Count of Records:</label>
+        <select id="datalimit">
+            <option value=10>10</option>
+            <option value=100 selected>100</option>
+            <option value=1000>1,000</option>
+            <option value=10000>10,000</option>
+        </select>
+    </div>
+
+    <div class="form-control">
+        <button id="preview-button">Preview</button>
+    </div>
+    <div class="form-control">
+        <button id="chart-preview-button">Chart</button>
+    </div>
+    <div class="form-control">
+        <button id="download-button">Download</button>
+    </div>
+</div>
+<pre>
+<div id="result" class="result" style="display:none;">result</div>
+</pre>
+<div id="popup" class="popup">
+    <iframe id="popupIframe" width="100%" height="100%" style="border:none;" src="http://www.hani.co.kr"></iframe>
+
+    <button onclick="closePopup()">Close This Chart</button>
+</div>
+
+<script>
+
+function adjustResultHeight() {
+
+    var maxHeight = window.innerHeight * 0.7;
+    document.getElementById('result').style.maxHeight = `${maxHeight}px`;
+}
+
+window.addEventListener('resize', adjustResultHeight);
+
+adjustResultHeight();
+
+document.getElementById('sensor-select').addEventListener('change', function() {
+    const table = document.getElementById('table-select');
+    var tablename = table.value;
+    var sensorValue = encodeURIComponent(this.value);
+    var requestUrl = `/db/tql/datahub/common/get_tag_stat.tql?table=${tablename}&tagname=${sensorValue}`;
+
+    fetch(requestUrl)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data.rows.length > 0) {
+
+
+                var recordCount = data.data.rows[0][1];
+                document.getElementById('record-count').textContent = recordCount;
+
+                var startTime = data.data.rows[0][2];
+                var endTime = data.data.rows[0][3];
+
+                var startTimeFormatted = startTime.slice(0, 16);
+                var endTimeFormatted = endTime.slice(0, 16);
+
+                document.getElementById('start-time').value = startTimeFormatted;
+                document.getElementById('end-time').value = endTimeFormatted;
+            } else {
+                console.error('Invalid response or no data');
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+});
+
+
+document.getElementById('preview-button').addEventListener('click', function() {
+    var sensor = document.getElementById('sensor-select').value;
+    var startTime = new Date(document.getElementById('start-time').value).getTime() / 1000;
+    var endTime = new Date(document.getElementById('end-time').value).getTime() / 1000;
+    var dataType   = document.getElementById('data-type').value;
+    var timeformat = document.getElementById('timeformat').value;
+    var timezone   = document.getElementById('timezone').value;
+    var datalimit   = document.getElementById('datalimit').value;
+
+    if (!sensor || !startTime || !endTime || !dataType) {
+        alert('Select all!');
+        return;
+    }
+    const table = document.getElementById('table-select');
+    var tablename = table.value;
+
+    var requestUrl = `/db/tql/datahub/common/download-data-${dataType}.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}`;
+    console.log('요청 URL:', requestUrl);
+
+    fetch(requestUrl)
+        .then(response => dataType === 'json' ? response.json() : response.text())
+        .then(data => {
+          var resultElement = document.getElementById('result');
+            if (dataType === 'json') {
+                resultElement.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } else {
+                resultElement.textContent = data;
+            }
+            resultElement.style.display = 'block';
+        })
+        .catch(error => console.error('Error:', error));
+});
+
+document.getElementById('download-button').addEventListener('click', function() {
+    var sensor = document.getElementById('sensor-select').value;
+    var startTime = new Date(document.getElementById('start-time').value).getTime() / 1000;
+    var endTime = new Date(document.getElementById('end-time').value).getTime() / 1000;
+    var dataType   = document.getElementById('data-type').value;
+    var timeformat = document.getElementById('timeformat').value;
+    var timezone   = document.getElementById('timezone').value;
+    var datalimit   = document.getElementById('datalimit').value;
+
+    if (!sensor || !startTime || !endTime || !dataType) {
+        alert('Select all!');
+        return;
+    }
+
+    const table = document.getElementById('table-select');
+    var tablename = table.value;
+
+    var requestUrl = `/db/tql/datahub/common/download-data-${dataType}.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}`;
+    window.open(requestUrl, '_blank');
+
+});
+
+document.getElementById('chart-preview-button').addEventListener('click', function() {
+    var sensor = document.getElementById('sensor-select').value;
+    var startTime = new Date(document.getElementById('start-time').value).getTime() / 1000;
+    var endTime = new Date(document.getElementById('end-time').value).getTime() / 1000;
+    var dataType   = document.getElementById('data-type').value;
+    var timeformat = document.getElementById('timeformat').value;
+    var timezone   = document.getElementById('timezone').value;
+    var datalimit   = document.getElementById('datalimit').value;
+
+    if (!sensor || !startTime || !endTime || !dataType) {
+        alert('Select all!');
+        return;
+    }
+
+    const table = document.getElementById('table-select');
+    var tablename = table.value;
+
+    var requestUrl = `/db/tql/datahub/common/chart-preview.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}`;
+
+    document.getElementById("popup").style.display = "block";
+    document.getElementById("popupIframe").src = requestUrl;
+});
+
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+
+//
+document.getElementById('table-select').addEventListener('change', function() {
+    const selectedTable = this.value;
+
+    function fetchSensorList() {
+        const apiUrl = `/db/tql/datahub/common/get_tag_names.tql?table=${encodeURIComponent(selectedTable)}`;
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data && data.data.rows) {
+                    updateSelectOptions(data.data.rows);
+                } else {
+                    console.error('Error to load tag names');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function updateSelectOptions(SensorList) {
+        const select = document.getElementById('sensor-select');
+        while (select.options.length > 1) {
+            select.remove(1);
+        }
+        SensorList.forEach(table => {
+            const option = document.createElement('option');
+            option.value = table[0];
+            option.textContent = table[0];
+            select.appendChild(option);
+        });
+    }
+
+    fetchSensorList();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    function fetchTableList() {
+        return fetch('/db/tql/datahub/common/get_tag_tables.tql')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data && data.data.rows) {
+                    updateSelectOptions(data.data.rows);
+                } else {
+                    console.error('Failed to load table names');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function updateSelectOptions(tableList) {
+        const select = document.getElementById('table-select');
+
+        tableList.forEach(table => {
+            const option = document.createElement('option');
+            option.value = table[0];
+            option.textContent = table[0];
+            select.appendChild(option);
+        });
+    }
+    // Usage : view.html?tablename=$TABLENAME$
+    const params = new URLSearchParams(window.location.search);
+    const param_org = params.get('tablename');
+    const param_tablename = param_org ? param_org.toUpperCase() : '';
+
+    const selectElement = document.getElementById('table-select');
+    const resultElement = document.getElementById('result');
+
+    function changeSelectValue(newValue) {
+        selectElement.value = newValue;
+        const event = new Event('change');
+        selectElement.dispatchEvent(event);
+    }
+
+    fetchTableList().then(() => {
+        changeSelectValue(param_tablename);
+    });
+});
+
+</script>
+
+</body>
+</html>
