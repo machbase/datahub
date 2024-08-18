@@ -9,7 +9,7 @@ PUSHVALUE(2, value(0))
 POPVALUE(0, 1)
 MAPVALUE(0, strTime(value(0), param('timeformat') ?? 's', tz(param('timezone') ?? 'Local')))
 
-CHART(theme('romantic'), size('800px', '600px'),
+CHART(size('800px', '600px'),
     chartOption(strSprintf(`{
         title: {
           text: '%s',       // title
@@ -22,8 +22,8 @@ CHART(theme('romantic'), size('800px', '600px'),
         dataZoom: [
         {
             type: 'slider',
-            start: 0,
-            end: 50
+            start: 25,
+            end: 75
         },
         {
             type: 'inside',
