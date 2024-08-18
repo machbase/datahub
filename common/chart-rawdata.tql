@@ -7,10 +7,13 @@ QUERY(
 )
 PUSHVALUE(2, value(0))
 POPVALUE(0, 1)
-MAPVALUE(0, strTime(value(0), param('timeformat') ?? 's', tz(param('timezone') ?? 'Local')))
+MAPVALUE(0, strTime(value(0), 'DEFAULT', 'Local'))
 
-CHART(size('800px', '600px'),
+CHART(size('1024px', '768px'),
     chartOption(strSprintf(`{
+        tooltip: {
+            trigger: 'axis',
+        },
         title: {
           text: '%s',       // title
             subtext: '%s',  // subtitle

@@ -1,0 +1,47 @@
+SQL(strSprintf(`SELECT rollup('%s', %10.f, time) as mtime, avg(value) FROM %s 
+                WHERE name = 'TAG-temperature' and time between FROM_UNIXTIME(%f) and FROM_UNIXTIME(%f) group by mtime order by mtime`, 
+                param('unit') ?? 'min',
+                parseFloat(param('unitvalue') ?? 5),
+                param('table') ?? 'home', 
+                parseFloat(param('startTime') ?? '1451624400'), 
+                parseFloat(param('endTime') ?? '1562128280')))
+
+MAPVALUE(0, strTime(value(0), 'DEFAULT',  'Local'))
+
+CHART(size('1024px', '768px'),
+    chartOption(strSprintf(`{
+        tooltip: {
+            trigger: 'axis',
+        },
+        title: {
+          text: '%s (rollup %s %s)',       // title
+            subtext: '%s',  // subtitle
+            left: 'center', // titme location
+            textStyle: {
+                color: '#333' // title style
+            }
+        },
+        dataZoom: [
+        {
+            type: 'slider',
+            start: 25,
+            end: 75
+        },
+        {
+            type: 'inside',
+            start: 0,
+            end: 100
+        }
+        ],
+        xAxis: { data: column(0) },
+        yAxis: {},
+        series: [
+            {
+                type: 'line',
+                name: 'value',
+                smooth: false,
+                data: column(1)
+            }
+        ]
+    }`, param('table'), param('unitvalue'), param('unit'), param('sensor')))
+)

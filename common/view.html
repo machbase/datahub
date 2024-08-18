@@ -116,72 +116,15 @@
     </div>
 
     <div class="form-control">
-        <label for="timeformat">Time Format:</label>
-        <select id="timeformat">
-            <option value="DEFAULT" selected> DEFAULT (2006-01-02 15:04:05.999) </option>
-            <option value="s"> Unix epoch time in seconds (1451624400) </option>
-            <option value="ms"> Unix epoch time in milliseconds (1451624400000) </option>
-            <option value="us"> Unix epoch time in microseconds (1451624400000000)</option>
-            <option value="ns"> Unix epoch time in nanoseconds  (1451624400000000000)</option>
-            <option value="NUMERIC"> NUMERIC (01/02 03:04:05PM ‘06 -0700) </option>
-            <option value="ANSIC"> ANSIC (Mon Jan _2 15:04:05 2006) </option>
-            <option value="UNIX"> UNIX (Mon Jan _2 15:04:05 MST 2006) </option>
-            <option value="RUBY"> RUBY (Mon Jan 02 15:04:05 -0700 2006) </option>
-            <option value="RFC822"> RFC822 (02 Jan 06 15:04 MST) </option>
-            <option value="RFC822Z"> RFC822Z (02 Jan 06 15:04 -0700) </option>
-            <option value="RFC850"> RFC850 (Monday, 02-Jan-06 15:04:05 MST) </option>
-            <option value="RFC1123"> RFC1123 (Mon, 02 Jan 2006 15:04:05 MST) </option>
-            <option value="RFC1123Z"> RFC1123Z (Mon, 02 Jan 2006 15:04:05 -0700) </option>
-            <option value="RFC3339"> RFC3339 (2006-01-02T15:04:05Z07:00) </option>
-            <option value="RFC3339NANO"> RFC3339NANO (2006-01-02T15:04:05.999999999Z07:00) </option>
-            <option value="KITCHEN"> KITCHEN (3:04:05PM) </option>
-            <option value="STAMP"> STAMP (Jan _2 15:04:05) </option>
-            <option value="STAMPMILLI"> STAMPMILLI (Jan _2 15:04:05.000) </option>
-            <option value="STAMPMICRO"> STAMPMICRO (Jan _2 15:04:05.000000) </option>
-            <option value="STAMPNANO"> STAMPNANO (Jan _2 15:04:05.000000000) </option>
-            <option value="s_ms"> seconds and millisec (05.999) </option>
-            <option value="s_us"> seconds and microsec (05.999999) </option>
-            <option value="s_ns"> seconds and nanosec (05.999999999) </option>
-            <option value="s.ms"> seconds and millisec, zero padding (05.000) </option>
-            <option value="s.us"> seconds and microsec, zero padding (05.000000) </option>
-            <option value="s.ns"> seconds and nanosec, zero padding (05.000000000) </option>
-        </select>
+    <input type=hidden id=timeformat name=timeformat value='Default'>
     </div>
 
     <div class="form-control">
-        <label for="timezone">Time Zone:</label>
-        <select id="timezone">
-    <option value="Local" selected>Local</option>
-    <option value="UTC"> (Coordinated Universal Time) </option>
-    <option value="Europe/London"> (London, UK) </option>
-    <option value="America/New_York"> (New York, USA) </option>
-    <option value="America/Los_Angeles"> (Los Angeles, USA) </option>
-    <option value="Asia/Tokyo"> (Tokyo, Japan) </option>
-    <option value="Asia/Seoul"> (Seoul, South Korea) </option>
-        <option value="Australia/Sydney"> (Sydney, Australia) </option>
-    <option value="Europe/Paris"> (Paris, France) </option>
-        <option value="Europe/Berlin"> (Berlin, Germany) </option>
-        <option value="Europe/Moscow"> (Moscow, Russia) </option>
-    <option value="Asia/Beijing"> (Beijing, China) </option>
-    <option value="Asia/Shanghai"> (Shanghai, China) </option>
-    <option value="Asia/Hong_Kong"> (Hong Kong) </option>
-    <option value="Asia/Singapore"> (Singapore) </option>
-    <option value="America/Sao_Paulo"> (Sao Paulo, Brazil) </option>
-    <option value="America/Toronto"> (Toronto, Canada) </option>
-    <option value="Europe/Madrid"> (Madrid, Spain) </option>
-    <option value="Africa/Johannesburg"> (Johannesburg, South Africa) </option>
-    <option value="Asia/Dubai"> (Dubai, United Arab Emirates) </option>
-    <option value="Asia/Kolkata"> (Kolkata, India) </option>
-
-        </select>
+    <input type=hidden id=timezone name=timezone value='Local'>
     </div>
 
     <div class="form-control">
-        <label for="data-type">Data Type:</label>
-        <select id="data-type">
-            <option value="csv" selected>CSV</option>
-            <option value="json">JSON</option>
-        </select>
+    <input type=hidden id="data-type" name="data-type" value='csv'>
     </div>
 
     <div class="form-control">
@@ -195,13 +138,13 @@
     </div>
 
     <div class="form-control">
-        <button id="preview-button">Preview</button>
+        <button id="chart-rawdata-button">Raw Chart</button>
     </div>
     <div class="form-control">
-        <button id="chart-preview-button">Chart</button>
+        <button id="chart-rollup-short-button">Rollup 1 Hour Chart</button>
     </div>
     <div class="form-control">
-        <button id="download-button">Download</button>
+        <button id="chart-rollup-long-button">Rollup 1 Day Chart</button>
     </div>
 </div>
 <pre>
@@ -253,7 +196,7 @@ document.getElementById('sensor-select').addEventListener('change', function() {
                 const start_hours = String(startDate.getHours()).padStart(2, '0');
                 const start_minutes = String(startDate.getMinutes()).padStart(2, '0');
                 const start_localDatetimeString = `${start_year}-${start_month}-${start_day}T${start_hours}:${start_minutes}`;
-                
+
                 const end_year = endDate.getFullYear();
                 const end_month = String(endDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
                 const end_day = String(endDate.getDate()).padStart(2, '0');
@@ -264,7 +207,7 @@ document.getElementById('sensor-select').addEventListener('change', function() {
                 // Date 객체를 로컬 시간으로 변환하여 'YYYY-MM-DDTHH:MM' 형식의 문자열로 만들기
                 const startTimeFormatted = start_localDatetimeString;
                 const endTimeFormatted   = end_localDatetimeString;
-                
+
                 document.getElementById('start-time').value = startTimeFormatted;
                 document.getElementById('end-time').value = endTimeFormatted;
             } else {
@@ -275,40 +218,7 @@ document.getElementById('sensor-select').addEventListener('change', function() {
 });
 
 
-document.getElementById('preview-button').addEventListener('click', function() {
-    var sensor = document.getElementById('sensor-select').value;
-    var startTime = new Date(document.getElementById('start-time').value).getTime() / 1000;
-    var endTime = new Date(document.getElementById('end-time').value).getTime() / 1000;
-    var dataType   = document.getElementById('data-type').value;
-    var timeformat = document.getElementById('timeformat').value;
-    var timezone   = document.getElementById('timezone').value;
-    var datalimit   = document.getElementById('datalimit').value;
-
-    if (!sensor || !startTime || !endTime || !dataType) {
-        alert('Select all!');
-        return;
-    }
-    const table = document.getElementById('table-select');
-    var tablename = table.value;
-
-    var requestUrl = `/db/tql/datahub/common/download-data-${dataType}.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}`;
-    console.log('요청 URL:', requestUrl);
-
-    fetch(requestUrl)
-        .then(response => dataType === 'json' ? response.json() : response.text())
-        .then(data => {
-          var resultElement = document.getElementById('result');
-            if (dataType === 'json') {
-                resultElement.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-            } else {
-                resultElement.textContent = data;
-            }
-            resultElement.style.display = 'block';
-        })
-        .catch(error => console.error('Error:', error));
-});
-
-document.getElementById('download-button').addEventListener('click', function() {
+document.getElementById('chart-rawdata-button').addEventListener('click', function() {
     var sensor = document.getElementById('sensor-select').value;
     var startTime = new Date(document.getElementById('start-time').value).getTime() / 1000;
     var endTime = new Date(document.getElementById('end-time').value).getTime() / 1000;
@@ -325,29 +235,7 @@ document.getElementById('download-button').addEventListener('click', function() 
     const table = document.getElementById('table-select');
     var tablename = table.value;
 
-    var requestUrl = `/db/tql/datahub/common/download-data-${dataType}.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}`;
-    window.open(requestUrl, '_blank');
-
-});
-
-document.getElementById('chart-preview-button').addEventListener('click', function() {
-    var sensor = document.getElementById('sensor-select').value;
-    var startTime = new Date(document.getElementById('start-time').value).getTime() / 1000;
-    var endTime = new Date(document.getElementById('end-time').value).getTime() / 1000;
-    var dataType   = document.getElementById('data-type').value;
-    var timeformat = document.getElementById('timeformat').value;
-    var timezone   = document.getElementById('timezone').value;
-    var datalimit   = document.getElementById('datalimit').value;
-
-    if (!sensor || !startTime || !endTime || !dataType) {
-        alert('Select all!');
-        return;
-    }
-
-    const table = document.getElementById('table-select');
-    var tablename = table.value;
-
-    var requestUrl = `/db/tql/datahub/common/chart-preview.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}`;
+    var requestUrl = `/db/tql/datahub/common/chart-rawdata.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}`;
 
     document.getElementById("popup").style.display = "block";
     document.getElementById("popupIframe").src = requestUrl;
@@ -357,7 +245,61 @@ document.getElementById('chart-preview-button').addEventListener('click', functi
         document.getElementById("popup").style.display = "none";
     }
 
-//
+document.getElementById('chart-rollup-short-button').addEventListener('click', function() {
+    var sensor = document.getElementById('sensor-select').value;
+    var startTime = new Date(document.getElementById('start-time').value).getTime() / 1000;
+    var endTime = new Date(document.getElementById('end-time').value).getTime() / 1000;
+    var dataType   = document.getElementById('data-type').value;
+    var timeformat = document.getElementById('timeformat').value;
+    var timezone   = document.getElementById('timezone').value;
+    var datalimit   = document.getElementById('datalimit').value;
+
+    if (!sensor || !startTime || !endTime || !dataType) {
+        alert('Select all!');
+        return;
+    }
+
+    const table = document.getElementById('table-select');
+    var tablename = table.value;
+
+    var requestUrl = `/db/tql/datahub/common/chart-rollup.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}&unit=min&unitvalue=60`;
+
+    document.getElementById("popup").style.display = "block";
+    document.getElementById("popupIframe").src = requestUrl;
+});
+
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+
+document.getElementById('chart-rollup-long-button').addEventListener('click', function() {
+    var sensor = document.getElementById('sensor-select').value;
+    var startTime = new Date(document.getElementById('start-time').value).getTime() / 1000;
+    var endTime = new Date(document.getElementById('end-time').value).getTime() / 1000;
+    var dataType   = document.getElementById('data-type').value;
+    var timeformat = document.getElementById('timeformat').value;
+    var timezone   = document.getElementById('timezone').value;
+    var datalimit   = document.getElementById('datalimit').value;
+
+    if (!sensor || !startTime || !endTime || !dataType) {
+        alert('Select all!');
+        return;
+    }
+
+    const table = document.getElementById('table-select');
+    var tablename = table.value;
+
+    var requestUrl = `/db/tql/datahub/common/chart-rollup.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}&unit=hour&unitvalue=24`;
+
+    document.getElementById("popup").style.display = "block";
+    document.getElementById("popupIframe").src = requestUrl;
+});
+
+    function closePopup() {
+        document.getElementById("popup").style.display = "none";
+    }
+
+
 document.getElementById('table-select').addEventListener('change', function() {
     const selectedTable = this.value;
 
