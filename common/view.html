@@ -82,7 +82,7 @@
 
 <body>
 
-<h1>DataHub Viewer</h1>
+<h1 id='mainTitle'>DataHub Viewer</h1>
 
 
 <div class="form-controls">
@@ -131,8 +131,8 @@
         <label for="datalimit">Maximum Count of Records:</label>
         <select id="datalimit">
             <option value=10>10</option>
-            <option value=100 selected>100</option>
-            <option value=1000>1,000</option>
+            <option value=100>100</option>
+            <option value=1000  selected>1,000</option>
             <option value=10000>10,000</option>
         </select>
     </div>
@@ -374,6 +374,11 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchTableList().then(() => {
         changeSelectValue(param_tablename);
     });
+    
+    document.getElementById("mainTitle").innerText = "Data Viewer (" + param_org + ")";
+
+
+
 });
 
 </script>
