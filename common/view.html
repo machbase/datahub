@@ -108,13 +108,11 @@
 
     <div class="form-control">
         <label for="start-time">Begin Time (Local)</label>
-        <input type="datetime-local" id="start-time" name="start-time"
-               value="2016-01-01T14:00" min="2016-01-01T14:00" max="2016-01-02T17:46">
+        <input type="datetime-local" id="start-time" name="start-time">
     </div>
     <div class="form-control">
         <label for="end-time">End Time (Local)</label>
-        <input type="datetime-local" id="end-time" name="end-time"
-               value="2016-01-02T17:46" min="2016-01-01T14:00" max="2016-01-02T17:46">
+        <input type="datetime-local" id="end-time" name="end-time">
     </div>
 
     <div class="form-control">
@@ -245,9 +243,28 @@ document.getElementById('sensor-select').addEventListener('change', function() {
                 var startTime = data.data.rows[0][2];
                 var endTime = data.data.rows[0][3];
 
-                var startTimeFormatted = startTime.slice(0, 16);
-                var endTimeFormatted = endTime.slice(0, 16);
+                // Unix Epoch 시간을 밀리초로 변환
+                const startDate = new Date(startTime * 1000);
+                const endDate   = new Date(endTime   * 1000);
 
+                const start_year = startDate.getFullYear();
+                const start_month = String(startDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+                const start_day = String(startDate.getDate()).padStart(2, '0');
+                const start_hours = String(startDate.getHours()).padStart(2, '0');
+                const start_minutes = String(startDate.getMinutes()).padStart(2, '0');
+                const start_localDatetimeString = `${start_year}-${start_month}-${start_day}T${start_hours}:${start_minutes}`;
+                
+                const end_year = endDate.getFullYear();
+                const end_month = String(endDate.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+                const end_day = String(endDate.getDate()).padStart(2, '0');
+                const end_hours = String(endDate.getHours()).padStart(2, '0');
+                const end_minutes = String(endDate.getMinutes()).padStart(2, '0');
+                const end_localDatetimeString = `${end_year}-${end_month}-${end_day}T${end_hours}:${end_minutes}`;
+
+                // Date 객체를 로컬 시간으로 변환하여 'YYYY-MM-DDTHH:MM' 형식의 문자열로 만들기
+                const startTimeFormatted = start_localDatetimeString;
+                const endTimeFormatted   = end_localDatetimeString;
+                
                 document.getElementById('start-time').value = startTimeFormatted;
                 document.getElementById('end-time').value = endTimeFormatted;
             } else {

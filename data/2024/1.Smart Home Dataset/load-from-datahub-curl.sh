@@ -1,1 +1,1 @@
-curl -o - https://neo-demo.machbase.com/db/query  --data-urlencode "q=select * from home  " --data-urlencode "format=csv" |  curl -X POST "http://127.0.0.1:5654/db/write/home?timeformat=ns&heading=true&method=append" -H "Content-Type: text/csv"   --data-binary @-
+curl -o - https://datahub-2024-1.machbase.com/db/query  --data-urlencode "q=select * from home  " --data-urlencode "format=csv" |  curl -X POST "http://127.0.0.1:5654/db/write/home?timeformat=ns&heading=true&method=append" -H "Content-Type: text/csv"   --data-binary @-
