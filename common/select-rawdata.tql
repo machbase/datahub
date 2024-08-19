@@ -5,7 +5,7 @@ SQL(strSprintf(`SELECT %s FROM %s
                 param('name') == NULL ? 'name is not null' : (strSprintf("name in (%s)", param('name'))),
                 param('start') ?? 'FROM_UNIXTIME(1451624400)', 
                 param('end')   ?? 'FROM_UNIXTIME(1562128280)',
-                param('limit')??'100')
+                param('limit')??'100000')
                 )
 
 CSV(timeformat(param('timeformat') ?? 'DEFAULT'), tz(param('timezone') ?? 'Local'))
