@@ -1,7 +1,7 @@
 SQL(strSprintf(`SELECT name, rollup('%s', %10.f, time) as mtime, %s(value) FROM %s 
                 WHERE name in (%s) and time between %s and %s group by name, mtime order by name, mtime limit %s`, 
-                param('type') ?? 'min',
-                parseFloat(param('size') ?? 5),
+                param('timeunit') ?? 'min',
+                parseFloat(param('timesize') ?? 5),
                 param('func') ?? 'avg',
                 param('table') ?? 'home', 
                 param('name') ?? "'TAG-pressure'",
