@@ -9,7 +9,7 @@ PUSHVALUE(2, value(0))
 POPVALUE(0, 1)
 MAPVALUE(0, strTime(value(0), 'DEFAULT', 'Local'))
 
-CHART(size('1024px', '768px'),
+CHART(size('1024px', '700px'),
     chartOption(strSprintf(`{
         tooltip: {
             trigger: 'axis',
