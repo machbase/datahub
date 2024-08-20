@@ -1,2 +1,2 @@
-SQL("select name from v$" + (param("table") ?? "home") + "_stat ")
-JSON(timeformat('DEFAULT'), header(true), tz('Local'))
+SQL("select NAME from v$" + (param("table") ?? "home") + "_stat ")
+CSV(timeformat('DEFAULT'), header(true), tz('Local'))

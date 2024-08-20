@@ -172,7 +172,7 @@ document.getElementById('sensor-select').addEventListener('change', function() {
     const table = document.getElementById('table-select');
     var tablename = table.value;
     var sensorValue = encodeURIComponent(this.value);
-    var requestUrl = `/db/tql/datahub/common/get_tag_stat.tql?table=${tablename}&tagname=${sensorValue}`;
+    var requestUrl = `/db/tql/datahub/common/get_tag_stat_json.tql?table=${tablename}&tagname=${sensorValue}`;
 
     fetch(requestUrl)
         .then(response => response.json())
@@ -304,7 +304,7 @@ document.getElementById('table-select').addEventListener('change', function() {
     const selectedTable = this.value;
 
     function fetchSensorList() {
-        const apiUrl = `/db/tql/datahub/common/get_tag_names.tql?table=${encodeURIComponent(selectedTable)}`;
+        const apiUrl = `/db/tql/datahub/common/get_tag_names_json.tql?table=${encodeURIComponent(selectedTable)}`;
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
@@ -335,7 +335,7 @@ document.getElementById('table-select').addEventListener('change', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     function fetchTableList() {
-        return fetch('/db/tql/datahub/common/get_tag_tables.tql')
+        return fetch('/db/tql/datahub/common/get_tag_tables_json.tql')
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.data && data.data.rows) {
