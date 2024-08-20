@@ -19,7 +19,7 @@ def process_csv_files(file_name, base_time):
             # 각 행을 처리
             for row in reader:
                 # time 값을 float로 변환하고 base_time에 더함
-                time = int(base_time + (float(row[0]) * 1000000))
+                time = int(base_time + (float(row[0]) * 1000000000))
 
                 # 각 컬럼에 대해 처리
                 for i, value in enumerate(row[1:], start=1):
@@ -32,8 +32,7 @@ file_list = ['g1_sensor1.csv', 'g1_sensor2.csv', 'g1_sensor3.csv', 'g1_sensor4.c
 
 # 파일 처리 및 결과 얻기
 epoch_2024 = int(datetime.datetime(2024, 1, 1).timestamp())
-base_time = epoch_2024 * 1000000  # 100만 추가
-
+base_time = epoch_2024 * 1000000000  # 100만 추가
 for file_name in file_list:
     output = process_csv_files(file_name, base_time)
 
