@@ -37,5 +37,6 @@ for file_name in file_list:
     output = process_csv_files(file_name, base_time)
 
 # 결과 출력
+print("NAME,TIME,VALUE")
 for line in output:
     print(line)
