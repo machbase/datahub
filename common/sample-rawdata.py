@@ -8,10 +8,11 @@ url = "http://127.0.0.1:5654/db/tql/datahub/common/select-rawdata.tql"
 # URL에 포함할 파라미터
 params = {
     "target": "name,time,value",
-    "name":"'TAG-pressure','TAG-dewPoint'",
+    "table": "home",
+    "name": "'TAG-pressure','TAG-dewPoint'",
     "start": "2016-01-01 14:00:00",
-    "end": "2016-01-01 14:00:10",
-    "limit": "100"
+    "end": "2017-01-01 14:00:10",
+    "limit": 10
 }
 
 

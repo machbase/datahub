@@ -7,6 +7,7 @@ url = "http://127.0.0.1:5654/db/tql/datahub/common/select-rollup.tql"
 
 # URL에 포함할 파라미터
 params = {
+    "table":"home",
     "timeunit": "min",
     "timesize": "5",
     "func" : "avg",

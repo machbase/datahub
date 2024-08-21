@@ -1,9 +1,9 @@
-SQL(strSprintf(`SELECT %s FROM %s 
-                WHERE %s and time between '%s' and '%s' %s`, 
+SQL(strSprintf(`SELECT %s FROM %s
+                WHERE %s and time between '%s' and '%s' %s`,
                 param('target') ?? '*',
-                param('table') ?? 'home', 
+                param('table') ?? 'home',
                 ((param('name') == NULL) || (param('name') == '')) ? 'name is not null' : (strSprintf("name in (%s)", param('name'))),
-                param('start') ?? '2016-01-01 14:00:00', 
+                param('start') ?? '2016-01-01 14:00:00',
                 param('end')   ?? '2016-01-01 14:00:10',
                 ((param('limit') == NULL) || (param('limit') == '')) ? '' : (strSprintf("limit %s", param('limit')))
                 ))
