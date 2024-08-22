@@ -26,8 +26,6 @@ def process_files(directory, column_prefix):
         file_datetime = get_datetime_from_filename(file)
         epoch_time = int(file_datetime.timestamp()) if file_datetime else "Not available"
         epoch_time = epoch_time * 1000000000;
-#        print(f"\nProcessing file: {file} (Epoch time: {epoch_time})")
-#        print("=" * 60)
 
         file_path = os.path.join(directory, file)
         try:
@@ -51,5 +49,4 @@ if __name__ == "__main__":
     column_prefix = sys.argv[1]
     directory_path = sys.argv[2] if len(sys.argv) > 2 else "."
 
-#    print("NAME,TIME,VALUE")
     process_files(directory_path, column_prefix)
