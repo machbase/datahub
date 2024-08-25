@@ -1,8 +1,9 @@
 SQL(strSprintf(`SELECT rollup('%s', %10.f, time) as mtime, avg(value) FROM %s 
-                WHERE name = 'TAG-temperature' and time between FROM_UNIXTIME(%f) and FROM_UNIXTIME(%f) group by mtime order by mtime`, 
+                WHERE name = '%s' and time between FROM_UNIXTIME(%f) and FROM_UNIXTIME(%f) group by mtime order by mtime`, 
                 param('unit') ?? 'min',
                 parseFloat(param('unitvalue') ?? 5),
                 param('table') ?? 'home', 
+                param('sensor') ?? 'TAG-pressure',
                 parseFloat(param('startTime') ?? '1451624400'), 
                 parseFloat(param('endTime') ?? '1562128280')))
 
