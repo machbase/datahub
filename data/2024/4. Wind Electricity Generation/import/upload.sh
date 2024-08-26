@@ -1,1 +1,0 @@
-curl -o - https://datahub-2024-4.machbase.com/db/query  --data-urlencode "q=select * from wind_elec_gen" --data-urlencode "format=csv" |  curl -X POST "http://127.0.0.1:5654/db/write/wind_elec_gen?timeformat=ns&heading=true&method=append" -H "Content-Type: text/csv"   --data-binary @-
