@@ -1,127 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TAG List Visualization</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    <title>풍력 발전 통계 테이블 - 전체 컬럼</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding: 20px;
             background-color: #f0f0f0;
         }
-        #chart-container {
-            width: 80%;
-            height: 600px;
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #tableContainer {
             background-color: white;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: auto;
+            margin-top: 20px;
         }
-        #loading {
-            font-size: 24px;
-            color: #333;
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
         }
     </style>
 </head>
 <body>
-    <div id="chart-container"></div>
-    <div id="loading">Loading data...</div>
+    <div id="tableContainer"></div>
 
     <script>
-        // Usage : view.html?tablename=$TABLENAME$
+      // Usage : view.html?tablename=$TABLENAME$
         const params = new URLSearchParams(window.location.search);
         var param_org = params.get('table');
         var param_org = param_org ? param_org.toUpperCase() : 'home';
         // URL을 여기에 입력하세요
-        var dataUrl = '/db/tql/datahub/viewer/get_tag_list_json.tql?table=' + param_org;
-        //alert(param_org)
-        async function fetchData() {
+        var jsonUrl = '/db/tql/datahub/viewer/get_tag_list_json.tql?table=' + param_org;
+        
+        async function fetchDataAndCreateTable() {
             try {
-                const response = await fetch(dataUrl);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                const response = await fetch(jsonUrl);
+                const jsonData = await response.json();
+                
+                if (jsonData.success && jsonData.data) {
+                    createTable(jsonData.data);
+                } else {
+                    throw new Error('데이터를 불러오는데 실패했습니다.');
                 }
-                const data = await response.json();
-                return data;
             } catch (error) {
-                console.error('Fetching data failed:', error);
-                document.getElementById('loading').textContent = 'Failed to load data. Please try again later.';
+                console.error('Error:', error);
+                document.getElementById('tableContainer').innerHTML = `<p>데이터를 불러오는 중 오류가 발생했습니다: ${error.message}</p>`;
             }
         }
 
-        function createChart(data) {
-            const chart = echarts.init(document.getElementById('chart-container'));
+        function createTable(data) {
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
 
-            const option = {
-                title: {
-                    text: param_org,
-                    left: 'center'
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    data: data.data.rows.map(row => row[0]),
-                    axisLabel: {
-                        rotate: 45,
-                        interval: 0
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    name: 'Row Count'
-                },
-                series: [{
-                    name: 'Row Count',
-                    type: 'bar',
-                    data: data.data.rows.map(row => row[1]),
-                    itemStyle: {
-                        color: '#3b82f6'
-                    }
-                }],
-                dataZoom: [
-                    {
-                        type: 'inside',
-                        start: 0,
-                        end: 100
-                    },
-                    {
-                        type: 'slider',
-                        start: 0,
-                        end: 100
-                    }
-                ]
-            };
-
-            chart.setOption(option);
-
-            window.addEventListener('resize', function() {
-                chart.resize();
+            // 테이블 헤더 생성
+            const headerRow = document.createElement('tr');
+            data.columns.forEach(column => {
+                const th = document.createElement('th');
+                th.textContent = column;
+                headerRow.appendChild(th);
             });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // 테이블 본문 생성
+            data.rows.forEach(row => {
+                const tr = document.createElement('tr');
+                row.forEach((cell, index) => {
+                    const td = document.createElement('td');
+                    if (data.types[index] === 'datetime') {
+                        td.textContent = new Date(cell).toLocaleString('ko-KR');
+                    } else if (data.types[index] === 'double') {
+                        td.textContent = parseFloat(cell).toFixed(2);
+                    } else if (data.types[index] === 'int64') {
+                        td.textContent = parseInt(cell).toLocaleString('ko-KR');
+                    } else {
+                        td.textContent = cell;
+                    }
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+
+            document.getElementById('tableContainer').appendChild(table);
         }
 
-        async function init() {
-            const data = await fetchData();
-            if (data) {
-                document.getElementById('loading').style.display = 'none';
-                createChart(data);
-            }
-        }
-
-        init();
+        // 페이지 로드 시 테이블 생성 함수 호출
+        window.onload = fetchDataAndCreateTable;
     </script>
 </body>
 </html>
+
+
 
