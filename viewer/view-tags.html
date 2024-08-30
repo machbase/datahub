@@ -91,7 +91,9 @@
                 row.forEach((cell, index) => {
                     const td = document.createElement('td');
                     if (data.types[index] === 'datetime') {
-                        td.textContent = new Date(cell).toLocaleString('ko-KR');
+                        const date = new Date(cell);
+                        td.textContent = date.toLocaleString('ko-KR');
+                        td.dataset.epochValue = date.getTime() / 1000; // epoch 값 저장 (초 단위)
                     } else if (data.types[index] === 'double') {
                         td.textContent = parseFloat(cell).toFixed(2);
                     } else if (data.types[index] === 'int64') {
@@ -99,6 +101,15 @@
                     } else {
                         td.textContent = cell;
                     }
+                    // 행 클릭 이벤트 추가
+                    tr.addEventListener('click', function() {
+                        const name = this.cells[0].textContent; // NAME 값 (첫 번째 열)
+                        const startTime = this.cells[2].dataset.epochValue; // epoch 값 사용
+                        const endTime = this.cells[3].dataset.epochValue; // epoch 값 사용
+                        const url = `/db/tql/datahub/viewer/chart-rawdata.tql?table=${param_org}&sensor=${encodeURIComponent(name)}&startTime=${startTime}&endTime=${endTime}&datalimit=20000`;
+                        window.open(url, '_blank');
+                    });
+                    
                     tr.appendChild(td);
                 });
                 tbody.appendChild(tr);
