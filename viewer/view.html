@@ -196,7 +196,7 @@ document.getElementById('sensor-select').addEventListener('change', function() {
     const table = document.getElementById('table-select');
     var tablename = table.value;
     var sensorValue = encodeURIComponent(this.value);
-    var requestUrl = `/db/tql/datahub/common/get_tag_stat_json.tql?table=${tablename}&tagname=${sensorValue}`;
+    var requestUrl = `/db/tql/datahub/viewer/get_tag_stat_json.tql?table=${tablename}&tagname=${sensorValue}`;
 
     fetch(requestUrl)
         .then(response => response.json())
@@ -259,7 +259,7 @@ document.getElementById('chart-rawdata-button').addEventListener('click', functi
     const table = document.getElementById('table-select');
     var tablename = table.value;
 
-    var requestUrl = `/db/tql/datahub/common/chart-rawdata.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}`;
+    var requestUrl = `/db/tql/datahub/viewer/chart-rawdata.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}`;
 
     document.getElementById("popup").style.display = "block";
     document.getElementById("popupIframe").src = requestUrl;
@@ -286,7 +286,7 @@ document.getElementById('chart-rollup-short-button').addEventListener('click', f
     const table = document.getElementById('table-select');
     var tablename = table.value;
 
-    var requestUrl = `/db/tql/datahub/common/chart-rollup.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}&unit=min&unitvalue=60`;
+    var requestUrl = `/db/tql/datahub/viewer/chart-rollup.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}&unit=min&unitvalue=60`;
 
     document.getElementById("popup").style.display = "block";
     document.getElementById("popupIframe").src = requestUrl;
@@ -313,7 +313,7 @@ document.getElementById('chart-rollup-long-button').addEventListener('click', fu
     const table = document.getElementById('table-select');
     var tablename = table.value;
 
-    var requestUrl = `/db/tql/datahub/common/chart-rollup.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}&unit=hour&unitvalue=24`;
+    var requestUrl = `/db/tql/datahub/viewer/chart-rollup.tql?table=${tablename}&sensor=${sensor}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&dataType=${dataType}&timeformat=${timeformat}&timezone=${timezone}&datalimit=${datalimit}&unit=hour&unitvalue=24`;
 
     document.getElementById("popup").style.display = "block";
     document.getElementById("popupIframe").src = requestUrl;
@@ -328,7 +328,7 @@ document.getElementById('table-select').addEventListener('change', function() {
     const selectedTable = this.value;
 
     function fetchSensorList() {
-        const apiUrl = `/db/tql/datahub/common/get_tag_names_json.tql?table=${encodeURIComponent(selectedTable)}`;
+        const apiUrl = `/db/tql/datahub/viewer/get_tag_names_json.tql?table=${encodeURIComponent(selectedTable)}`;
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
@@ -359,7 +359,7 @@ document.getElementById('table-select').addEventListener('change', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     function fetchTableList() {
-        return fetch('/db/tql/datahub/common/get_tag_tables_json.tql')
+        return fetch('/db/tql/datahub/viewer/get_tag_tables_json.tql')
             .then(response => response.json())
             .then(data => {
                 if (data.success && data.data && data.data.rows) {

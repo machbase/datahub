@@ -3,18 +3,14 @@ import csv
 import io
 
 # 요청할 URL
-url = "http://127.0.0.1:5654/db/tql/datahub/common/select-rollup.tql"
+url = "http://127.0.0.1:5654/db/tql/datahub/api/v1/select-scale.tql"
 
 # URL에 포함할 파라미터
 params = {
     "table":"home",
-    "timeunit": "min",
-    "timesize": "5",
-    "func" : "avg",
     "name":"'TAG-pressure','TAG-dewPoint'",
     "start": "2016-01-01 14:00:00",
-    "end":   "2016-01-01 15:10:00",
-    "limit": "100"
+    "end": "2016-01-01 14:00:10"
 }
 
 

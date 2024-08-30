@@ -1,1 +1,0 @@
- curl http://dl.machbase.com/datahub/2024-1/datahub-2024-1-home.csv | curl -X POST "http://127.0.0.1:5654/db/write/home?timeformat=ns&heading=true&method=append" -H "Content-Type: text/csv"   --data-binary @-

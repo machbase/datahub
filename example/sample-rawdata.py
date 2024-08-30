@@ -3,7 +3,7 @@ import csv
 import io
 
 # 요청할 URL
-url = "http://127.0.0.1:5654/db/tql/datahub/common/select-rawdata.tql"
+url = "http://127.0.0.1:5654/db/tql/datahub/api/v1/select-rawdata.tql"
 
 # URL에 포함할 파라미터
 params = {
