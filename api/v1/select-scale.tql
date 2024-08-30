@@ -1,0 +1,10 @@
+SQL(strSprintf(`select name as NAME, min(min2) as MIN, max(max2) as MAX from (
+    SELECT name, rollup('day', 1, time) as mtime, max(value) as max2, min(value) as min2 FROM %s 
+    WHERE %s and time between '%s' and  '%s' group by name, mtime order by name, mtime) group by name order by name`,                 
+                param('table') ?? 'home', 
+                ((param('name') == NULL) || (param('name') == '')) ? 'name is not null' : (strSprintf("name in (%s)", param('name'))),
+                param('start') ?? '2016-01-01 14:00:00', 
+                param('end')   ?? '2016-01-01 14:00:10'
+    )
+)
+CSV(header(true))

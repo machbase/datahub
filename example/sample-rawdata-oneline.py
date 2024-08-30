@@ -29,6 +29,6 @@ end_ = quote(end)
 encoded_url = quote(name, safe=":/")
 
 
-df = pd.read_csv(f'http://127.0.0.1:5654/db/tql/datahub/common/select-rawdata.tql?target={target}&table={table}&name={encoded_url}&start={start_}&end={end_}&limit={limit}&timeformat={timeformat}')
+df = pd.read_csv(f'http://127.0.0.1:5654/db/tql/datahub/api/v1/select-rawdata.tql?target={target}&table={table}&name={encoded_url}&start={start_}&end={end_}&limit={limit}&timeformat={timeformat}')
 
 print(df)
