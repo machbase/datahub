@@ -1,11 +1,11 @@
 SQL(strSprintf(`SELECT %s FROM %s
-                WHERE %s and time between %s and %s %s`,
+                WHERE %s and time between '%s' and '%s' %s`,
                 param('target') ?? '*',
                 param('table') ?? 'home',
                 ((param('name') == NULL) || (param('name') == '')) ? 'name is not null' : (strSprintf("name in (%s)", param('name'))),
-                param('start') ?? '2016-01-01 14:00:00',
-                param('end')   ?? '2016-01-01 14:00:10',
+                param('start') ?? '2016-01-01 14:00:00.1',
+                param('end')   ?? '2016-01-01 14:00:10.1',
                 ((param('limit') == NULL) || (param('limit') == '')) ? '' : (strSprintf("limit %s", param('limit')))
                 ))
 
-CSV(header(true),timeformat(param('timeformat') ?? 'DEFAULT'), tz(param('timezone') ?? 'Local'))
+CSV(header(true),sqlTimeformat('YYYY-MM-DD HH24:MI:SS.SSS'), tz(param('timezone') ?? 'Local'))
