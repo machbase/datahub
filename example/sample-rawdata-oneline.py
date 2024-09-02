@@ -21,14 +21,51 @@ limit =''
 # 시간 포멧 설정
 timeformat = 'Default'
 
-# 시간 포멧 변경
-# URL 인코딩
-start_ = quote(start)
-end_ = quote(end)
 
-encoded_url = quote(name, safe=":/")
+params = [
+    {
+        "target": "name,time,value",
+        "table": "home",
+        "name": "'TAG-pressure','TAG-dewPoint'",
+        "start": "2016-01-01 14:00:00",
+        "end"  : "2017-01-01 14:00:10",
+        "limit": 10
+    },
+    {
+        "target": "name,time,value",
+        "table": "home",
+        "name": "'TAG-dewPoint'",
+        "start": "'2016-01-01 14:00:00'",
+        "end"  : "'2017-01-01 14:00:10'",
+        "limit": 10
+    },
+    {
+        "target": "name,time,value",
+        "table": "home",
+        "name": "'TAG-pressure','TAG-dewPoint'",
+        "start": "TO_DATE('2016-01-01 14:00:00.000000000', 'YYYY-MM-DD HH24:MI:SS.mmmuuunnn')",
+        "end":   "TO_DATE('2016-01-01 14:00:18.999999999', 'YYYY-MM-DD HH24:MI:SS.mmmuuunnn')",
+        "limit": 30
+    },
+    {
+        "target": "name,time,value",
+        "table": "home",
+        "name": "'TAG-pressure','TAG-dewPoint'",
+        "start": "1451624400000000000",
+        "end":   "1451624407000000000",
+        "limit": 30
+    },
+]
 
 
-df = pd.read_csv(f'http://127.0.0.1:5654/db/tql/datahub/api/v1/select-rawdata.tql?target={target}&table={table}&name={encoded_url}&start={start_}&end={end_}&limit={limit}&timeformat={timeformat}')
+for query in params:
 
-print(df)
+    # 시간 포멧 변경
+    # URL 인코딩
+    encoded_url = quote(query["name"], safe=":/")
+    start_ = quote(query["start"])
+    end_ = quote(query["end"])
+
+    df = pd.read_csv(f'http://127.0.0.1:5654/db/tql/datahub/api/v1/select-rawdata.tql?target={query["target"]}&table={query["table"]}&name={encoded_url}&start={start_}&end={end_}&limit={query["limit"]}&timeformat=Default')
+
+    print(df)

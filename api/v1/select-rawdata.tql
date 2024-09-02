@@ -1,10 +1,23 @@
 SQL(strSprintf(`SELECT %s FROM %s
-                WHERE %s and time between '%s' and '%s' %s`,
+                WHERE %s and time between %s and %s %s`,
                 param('target') ?? '*',
                 param('table') ?? 'home',
-                ((param('name') == NULL) || (param('name') == '')) ? 'name is not null' : (strSprintf("name in (%s)", param('name'))),
-                param('start') ?? '2016-01-01 14:00:00',
-                param('end')   ?? '2016-01-01 14:00:10',
+               ((param('name')  == NULL) || (param('name') == ''))  ? 'name is not null' : (strSprintf("name in (%s)", param('name'))),
+
+               ((param('start') == NULL) || (param('start') == '')) ?  '2016-01-01 14:00:00' :
+               (
+                   (strIndex(param('start'), '\'') == 0 || (strIndex(strToUpper(param('start')), 'TO_DATE') != -1)) ?
+                   strSprintf("%s", param('start')) :
+                   (regexp(`^\d+$`, param('start')) == true ? strSprintf("%s", param('start')) : strSprintf("'%s'", param('start')))
+                ),
+
+               ((param('end') == NULL)   || (param('end') == ''))   ?  '2016-01-01 14:00:10' :
+               (
+                   (strIndex(param('end'), '\'') == 0 || (strIndex(strToUpper(param('end')), 'TO_DATE') != -1)) ?
+                   strSprintf("%s", param('end')) :
+                   (regexp(`^\d+$`, param('end')) == true ? strSprintf("%s", param('end')) : strSprintf("'%s'", param('end')))
+               ),
+
                 ((param('limit') == NULL) || (param('limit') == '')) ? '' : (strSprintf("limit %s", param('limit')))
                 ))
 
