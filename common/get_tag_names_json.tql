@@ -1,2 +1,0 @@
-SQL("select name from v$" + (param("table") ?? "home") + "_stat " + " order by name")
-JSON(timeformat('DEFAULT'), header(true), tz('Local'))

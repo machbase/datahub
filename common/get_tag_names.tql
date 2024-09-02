@@ -1,2 +1,0 @@
-SQL("select NAME from v$" + (param("table") ?? "home") + "_stat " + " order by name")
-CSV(timeformat('DEFAULT'), header(true), tz('Local'))

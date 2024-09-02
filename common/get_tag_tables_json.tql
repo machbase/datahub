@@ -1,2 +1,0 @@
-SQL("select name from m$sys_tables where type = 6 order by name")
-JSON()
