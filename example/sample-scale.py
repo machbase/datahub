@@ -10,7 +10,7 @@ params = {
     "table":"home",
     "name":"'TAG-pressure','TAG-dewPoint'",
     "start": "2016-01-01 14:00:00",
-    "end": "2016-01-01 14:00:10"
+    "end": "2016-01-01 15:00:10"
 }
 
 
