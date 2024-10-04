@@ -5,7 +5,7 @@ from datetime import datetime
 def get_datetime_from_filename(filename):
     parts = filename.split('.')
 
-    # 초 부분이 없는 경우 '00'으로 채움
+    # Fill with '00' if seconds part is missing
     if len(parts) == 5:
         parts.append('00')
 
@@ -25,12 +25,12 @@ def process_files(directory, column_prefix):
     for file in sorted_files:
         file_datetime = get_datetime_from_filename(file)
         epoch_time = int(file_datetime.timestamp()) if file_datetime else "Not available"
-        epoch_time = epoch_time * 1000000000;
+        epoch_time = epoch_time * 1000000000
 
         file_path = os.path.join(directory, file)
         try:
             with open(file_path, 'r', newline='', encoding='utf-8') as datafile:
-                # 데이터 행 읽기 및 출력 (최대 5행만 출력)
+                # Read data rows and output (only output up to 5 rows)
                 for row_num, line in enumerate(datafile, 1):
                     row = line.strip().split('\t')
                     for i, value in enumerate(row, 1):
