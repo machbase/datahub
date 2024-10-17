@@ -1,1 +1,1 @@
-curl http://datahub-dl.machbase.com/datahub/2024-9/datahub-2024-09-Appliances-Energy.csv.gz | machbase-neo shell import --input - --compress gzip --header --method append --timeformat ns appliance_energy
+curl http://dl.machbase.com/datahub/2024-9/datahub-2024-09-Appliances-Energy.csv.gz | machbase-neo shell import --input - --compress gzip --header --method append --timeformat ns appliance_energy
