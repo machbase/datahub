@@ -1,0 +1,2 @@
+curl http://data.yotahub.com/2024-4/datahub-2024-4-wind_elec_gen_1.csv.gz | machbase-neo shell import --input -  --compress gzip --header --method append --timeformat ns wind_elec_gen
+curl http://data.yotahub.com/2024-4/datahub-2024-4-wind_elec_gen_2.csv.gz | machbase-neo shell import --input -  --compress gzip --header --method append --timeformat ns wind_elec_gen

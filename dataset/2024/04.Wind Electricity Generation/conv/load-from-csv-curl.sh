@@ -1,2 +1,0 @@
-curl http://dl.machbase.com/datahub/2024-4/datahub-2024-4-wind_elec_gen_1.csv | curl -X POST "http://127.0.0.1:5654/db/write/wind_elec_gen?timeformat=ns&heading=true&method=append" -H "Content-Type: text/csv"   --data-binary @-
-curl http://dl.machbase.com/datahub/2024-4/datahub-2024-4-wind_elec_gen_2.csv | curl -X POST "http://127.0.0.1:5654/db/write/wind_elec_gen?timeformat=ns&heading=true&method=append" -H "Content-Type: text/csv"   --data-binary @-
