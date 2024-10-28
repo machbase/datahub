@@ -1,0 +1,1 @@
+python ./convert.py >datahub-2024-12-Gold-Price.csv
