@@ -1,0 +1,1 @@
+python ./convert.py >datahub-2024-13-India-Air-Quality.csv
