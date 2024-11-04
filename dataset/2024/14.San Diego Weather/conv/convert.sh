@@ -1,0 +1,1 @@
+python ./convert.py >datahub-2024-14-San-Diego-Daily-Weather.csv
