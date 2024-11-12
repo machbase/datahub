@@ -1,0 +1,19 @@
+
+$ tree .
+.
+├── Test
+│   ├── Competition_test_ascii.zip
+│   └── Competition_test_cnt.txt
+├── Train
+│   ├── Competition_train_ascii.zip
+│   ├── Competition_train_cnt.txt
+│   └── Competition_train_lab.txt
+├── convert.py
+├── convert.sh
+├── test.csv
+├── train.csv
+└── upload.sh
+
+3 directories, 10 files
+
+
