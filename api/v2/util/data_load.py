@@ -2,14 +2,14 @@ import pandas as pd
 from urllib.parse import quote
 
 # Data loading function
-def data_load(Ip, table, name, start_time, end_time, timeformat, resample_freq=None):
+def data_load(URL, table, name, start_time, end_time, timeformat, resample_freq=None):
     
     # URL Encoding Time
     start_time_ = quote(start_time)
     end_time_ = quote(end_time)
     
     # Load data 
-    df = pd.read_csv(f'{Ip}/db/tql/datahub/api/v2/tql/select-rawdata.tql?table={table}&name={name}&start={start_time_}&end={end_time_}&timeformat={timeformat}')
+    df = pd.read_csv(f'{URL}/db/tql/datahub/api/v2/tql/select-rawdata.tql?table={table}&name={name}&start={start_time_}&end={end_time_}&timeformat={timeformat}')
         
     # Convert to data grouped by the time
     df = df.pivot_table(index='TIME', columns='NAME', values='VALUE', aggfunc='first').reset_index()

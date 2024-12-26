@@ -4,7 +4,7 @@ import requests
 import io
 
 # Data loading function
-def Data_Info(Ip, table, timeformat, resample_freq=None):
+def Data_Info(URL, table, timeformat, resample_freq=None):
     
     params = parse.urlencode({
                             "q": f"select * from {table}",
@@ -14,7 +14,7 @@ def Data_Info(Ip, table, timeformat, resample_freq=None):
                             })
     
     # Load the data in compressed format
-    df = requests.request("GET", f"{Ip}/db/query", params=params, stream=True)
+    df = requests.request("GET", f"{URL}/db/query", params=params, stream=True)
 
     # Load as CSV format
     df = pd.read_csv(io.BytesIO(df.content))
