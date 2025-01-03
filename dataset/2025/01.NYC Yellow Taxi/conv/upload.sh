@@ -1,0 +1,1 @@
+curl http://data.yotahub.com/2025-1/datahub-2025-1-taxi.csv.gz | machbase-neo shell import --input - --compress gzip --header --method append --timeformat ns taxi
