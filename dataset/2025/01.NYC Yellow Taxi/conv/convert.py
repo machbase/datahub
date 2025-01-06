@@ -26,7 +26,7 @@ def data_cleaning(df):
     ).astype(float)
     
     # Remove cases where the trip duration is more than 1 hour or the distance is 0
-    df = df[(df['trip_distance'] != 0) & (df['trip_duration_minutes'] < 60)]
+    df = df[(df['trip_distance'] != 0) & (df['trip_duration_minutes'] < 60) & (df['trip_duration_minutes'] > 0)]
     
     # Remove the dropoff time
     df = df.drop(['tpep_dropoff_datetime'], axis=1)
@@ -87,6 +87,11 @@ df1 = pd.read_csv('./datahub-2025-1-taxi_0.csv')
 df2 = pd.read_csv('./datahub-2025-1-taxi_1.csv')
 df3 = pd.read_csv('./datahub-2025-1-taxi_2.csv')
 df4 = pd.read_csv('./datahub-2025-1-taxi_3.csv') 
+
+# Standardize the column names
+df2.columns = df1.columns
+df3.columns = df1.columns
+df4.columns = df1.columns
 
 # Concat each data
 df = pd.concat([df1, df2, df3, df4], axis=0).reset_index(drop=True)
