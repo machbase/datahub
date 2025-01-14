@@ -1,0 +1,1 @@
+python ./convert.py >datahub-2025-2-EU-weather.csv

@@ -1,0 +1,1 @@
+curl http://data.yotahub.com/2025-2/datahub-2025-2-EU-weather.csv.gz | machbase-neo shell import --input - --compress gzip --header --method append --timeformat ns eu_weather
