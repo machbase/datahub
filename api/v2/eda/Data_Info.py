@@ -39,8 +39,8 @@ def Data_Info(URL, table, timeformat, resample_freq=None):
     print(f'Number of data: {df.shape[0]}')
     print('--------------------------------------------')
     # Data time range
-    print(f'Start Time: {df.index[0]}')
-    print(f'End Time: {df.index[-1]}')
+    print(f'Start Time: {df.index[0] + pd.Timedelta(hours=9)}')
+    print(f'End Time: {df.index[-1] + pd.Timedelta(hours=9)}')
     print('--------------------------------------------')
     # Check for missing values
     print(f'Missing Values: {df.isnull().sum().sum()}')
