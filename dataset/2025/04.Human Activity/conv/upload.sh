@@ -1,0 +1,1 @@
+curl http://data.yotahub.com/2025-4/datahub-2025-4-human-activity.csv.gz | machbase-neo shell import --input - --compress gzip --header --method append --timeformat ns activity
