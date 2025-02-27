@@ -8,6 +8,9 @@ df_test = pd.read_csv('./test.csv')
 # concat train & test dataset
 df_total = pd.concat([df_train, df_test], axis=0).reset_index(drop=True)
 
+# Data shuffle
+df_total = df_total.sample(frac=1, random_state=42).reset_index(drop=True)   
+
 # Set arbitrary start time
 start_time = pd.Timestamp("2025-02-24 00:00:00")
 
