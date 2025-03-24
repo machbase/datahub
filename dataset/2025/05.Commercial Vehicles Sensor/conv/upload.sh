@@ -1,0 +1,1 @@
+curl http://data.yotahub.com/2025-5/datahub-2025-5-commercial-vehicles.csv.gz | machbase-neo shell import --input - --compress gzip --header --method append --timeformat ns commercial_vehicles
