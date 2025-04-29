@@ -9,7 +9,7 @@ def data_load(URL, table, name, start_time, end_time, timeformat, resample_freq=
     end_time_ = quote(end_time)
     
     # Load data 
-    df = pd.read_csv(f'{URL}/db/tql/datahub/api/v2/tql/select-rawdata.tql?table={table}&name={name}&start={start_time_}&end={end_time_}&timeformat={timeformat}')
+    df = pd.read_csv(f'{URL}/db/tql/datahub/api/v2/tql/select-rawdata.tql?table={table}&name={name}&start={start_time_}&end={end_time_}&timeformat={timeformat}', dtype={'NAME': str})
         
     # Convert to data grouped by the time
     df = df.pivot_table(index='TIME', columns='NAME', values='VALUE', aggfunc='first').reset_index()
