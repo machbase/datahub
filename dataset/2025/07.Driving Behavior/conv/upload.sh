@@ -1,0 +1,1 @@
+curl http://data.yotahub.com/2025-7/datahub-2025-7-Driving-Behavior.csv.gz | machbase-neo shell import --input - --compress gzip --header --method append --timeformat ns driving_behavior
